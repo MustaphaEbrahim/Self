@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <!--
+        <color name="colorPrimary">#005060</color>
+        <color name="colorPrimaryDark">#002D33</color>
+        <color name="colorAccent">#Ffac0f</color>
+        -->
+
+    <color name="colorAccent2">#B77904</color>
+    <color name="table_header">#B58018</color>
+    <!--<color name="colorAccent">#D81B60</color>-->
+    <color name="gray_navgation">#FEFEFE</color>
+    <color name="header_text_color">#024B74</color>
+
+    <color name="tab_unselect_color">#A79B86</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorLightBlue">#58C9E8</color>
+    <color name="colorLighterBlue">#EAF3F8</color>
+    <color name="colorOrange">#FF6752</color>
+
+    <color name="colorTransparentGreen">#5565FF99</color>
+    <color name="colorTransparentBlue2">#5558C9E8</color>
+    <color name="colorTransparentOrange">#55FF6752</color>
+
+    <color name="colorGoogle">#4885ED</color>
+    <color name="colorFacebook">#3B5998</color>
+    <color name="background_color">#EAF3F8</color>
+
+    <color name="colorLighterGray">#eeeeee</color>
+    <color name="colorLightGray">#cfcfcf</color>
+    <color name="colorGray">#bebebe</color>
+    <color name="colorDarkGray">#888888</color>
+    <color name="colorDarkerGray">#666666</color>
+    <color name="light_blue">#58C9E8</color>
+    <color name="colorLightGreen">#75BD6F</color>
+    <color name="colorAccentdim">#77daa927</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="gray_status">#838384</color>
+    <color name="gray">#bdbdbd</color>
+    <color name="dim_gray">#f5f5f5</color>
+    <color name="dim_black">#69000000</color>
+    <color name="red">#CE0C0C</color>
+    <color name="green">#64dd17</color>
+    <color name="background_dark">#003742</color>
+    <color name="tables_background">#003742</color>
+</resources>

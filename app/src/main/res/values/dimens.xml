@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--text sizes-->
+    <dimen name="small_text">14sp</dimen>
+    <dimen name="medium_text">16sp</dimen>
+    <dimen name="big_text">20sp</dimen>
+    <dimen name="extra_big_text">54sp</dimen>
+
+    <!--margins-->
+    <dimen name="tiny_margin">2dp</dimen>
+    <dimen name="small_margin">5dp</dimen>
+    <dimen name="medium_margin">10dp</dimen>
+    <dimen name="xmedium_margin">15dp</dimen>
+    <dimen name="large_margin">20dp</dimen>
+    <dimen name="xlarge_margin">25dp</dimen>
+    <dimen name="xxlarge_margin">30dp</dimen>
+    <dimen name="xxxlarge_margin">50dp</dimen>
+
+    <!--paddings-->
+    <dimen name="small_padding">5dp</dimen>
+    <dimen name="medium_padding">10dp</dimen>
+    <dimen name="xmedium_padding">15dp</dimen>
+    <dimen name="large_padding">20dp</dimen>
+    <dimen name="xlarge_padding">25dp</dimen>
+
+    <!--EditText-->
+    <dimen name="et_corner_radius">4dp</dimen>
+    <dimen name="et_height">40dp</dimen>
+    <dimen name="cv_corner_radius">4dp</dimen>
+    <dimen name="cv_elevation">4dp</dimen>
+
+    <!--Buttons-->
+    <dimen name="btn_height">50dp</dimen>
+
+    <!--Layouts-->
+    <dimen name="rl_title_margin">90dp</dimen>
+    <dimen name="iv_icon_dimen">24dp</dimen>
+    <dimen name="iv_profile_dimen">100dp</dimen>
+    <dimen name="btn_corner_radius">4dp</dimen>
+    <dimen name="cv_info_width">340dp</dimen>
+    <dimen name="tl_height">50dp</dimen>
+    <dimen name="iv_appoint_dimen">54dp</dimen>
+    <dimen name="ll_appoint_info">50dp</dimen>
+    <dimen name="iv_s_profile_dimen">70dp</dimen>
+    <dimen name="rl_booking_info">60dp</dimen>
+    <dimen name="btn_big_height">50dp</dimen>
+    <dimen name="btn_small_width">180dp</dimen>
+    <dimen name="iv_more_dimen">18dp</dimen>
+
+
+</resources>
