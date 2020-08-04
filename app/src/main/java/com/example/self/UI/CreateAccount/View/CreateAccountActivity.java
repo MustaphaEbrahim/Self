@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.self.Application.App;
 import com.example.self.UI.Base.BaseActivity;
 import com.example.self.UI.CreateAccount.ViewModel.CreateViewModel;
 import com.example.self.UI.PostJournal.View.PostJournalActivity;
