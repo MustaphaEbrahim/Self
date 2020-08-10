@@ -9,11 +9,11 @@ import java.util.concurrent.Executors;
 
 public abstract class BaseDataProvider {
 
-  //  protected Context context;
+    protected Context context;
     protected Executor executor = Executors.newSingleThreadExecutor();
 
     public BaseDataProvider() {
-       // this.context = App.getAppContext();
+        this.context = App.getAppContext();
 
     }
 

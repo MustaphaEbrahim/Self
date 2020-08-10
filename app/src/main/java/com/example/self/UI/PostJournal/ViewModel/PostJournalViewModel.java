@@ -6,47 +6,51 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.self.Application.App;
 import com.example.self.Repository.DataProviders.Base.OnDataProviderResponseListener;
 import com.example.self.UI.Base.BaseViewModel;
 import com.example.self.UI.CreateAccount.View.User;
-import com.example.self.UI.JournalList.View.Journal;
+import com.example.self.UI.PostJournal.View.Journal;
 
 public class PostJournalViewModel extends BaseViewModel {
 
     private MutableLiveData<Boolean> isLoadingMLD = new MutableLiveData<>();
     private MutableLiveData<Journal> isSuccessMLD = new MutableLiveData<>();
     private MutableLiveData<String> isErrorMLD = new MutableLiveData<>();
-    private MutableLiveData<App> userAlreadyExistMLD = new MutableLiveData<>();
-    private App currentUser;
+    private MutableLiveData<User> userAlreadyExistMLD = new MutableLiveData<>();
+    private User currentUser;
+
 
     public PostJournalViewModel(@NonNull Application application) {
         super(application);
     }
-    public void saveJournal(String title , String thoughts, Uri imageUri ){
+
+    public void saveJournal(String title, String thoughts, Uri imageUri) {
         isLoadingMLD.setValue(true);
+        if (currentUser != null) {
+            getUserDataProvider().saveJournal(title, thoughts, imageUri, currentUser, new OnDataProviderResponseListener<Journal>() {
+                @Override
+                public void onSuccess(Journal response) {
 
-        getUserDataProvider().saveJournal(title,thoughts,imageUri , new OnDataProviderResponseListener<Journal>() {
-            @Override
-            public void onSuccess(Journal response) {
+                    isLoadingMLD.setValue(false);
+                    isSuccessMLD.setValue(response);
 
-                isLoadingMLD.setValue(false);
-                isSuccessMLD.setValue(response);
+                }
 
-            }
+                @Override
+                public void onError(String errorMsg) {
 
-            @Override
-            public void onError(String errorMsg) {
+                    isLoadingMLD.setValue(false);
+                    isErrorMLD.setValue(errorMsg);
 
-                isLoadingMLD.setValue(false);
-                isErrorMLD.setValue(errorMsg);
-
-            }
-        });
+                }
+            });
+        }
     }
+
     public MutableLiveData<Boolean> getIsLoadingMLD() {
         return isLoadingMLD;
     }
+
     public MutableLiveData<Journal> getIsSuccessMLD() {
         return isSuccessMLD;
     }
@@ -54,12 +58,13 @@ public class PostJournalViewModel extends BaseViewModel {
     public MutableLiveData<String> getIsErrorMLD() {
         return isErrorMLD;
     }
-    public void getUserJournal(){
-        getUserDataProvider().getUserPostJournal(new OnDataProviderResponseListener<App>() {
+
+    public void getUserJournal() {
+        getUserDataProvider().getUserPostJournal(new OnDataProviderResponseListener<User>() {
             @Override
-            public void onSuccess(App response) {
-                currentUser = response;
-                userAlreadyExistMLD.setValue(response);
+            public void onSuccess(User user) {
+                currentUser = user;
+                userAlreadyExistMLD.setValue(user);
             }
 
             @Override
@@ -68,7 +73,8 @@ public class PostJournalViewModel extends BaseViewModel {
             }
         });
     }
-    public MutableLiveData<App> getUserAlreadyExistMLD() {
+
+    public MutableLiveData<User> getUserAlreadyExistMLD() {
         return userAlreadyExistMLD;
     }
 }

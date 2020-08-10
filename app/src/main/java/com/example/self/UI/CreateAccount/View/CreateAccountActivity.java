@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.self.Application.App;
+
 import com.example.self.UI.Base.BaseActivity;
 import com.example.self.UI.CreateAccount.ViewModel.CreateViewModel;
 import com.example.self.UI.PostJournal.View.PostJournalActivity;
@@ -47,6 +47,7 @@ public class CreateAccountActivity extends BaseActivity {
                     String username = binding.userNameAcct.getText().toString().trim();
 
                     viewModel.createUserEmailAccount(email, password, username);
+
                 } else {
                     Toast.makeText(CreateAccountActivity.this, "Empty Fields Not Allowed", Toast.LENGTH_LONG).show();
                 }
@@ -73,7 +74,6 @@ public class CreateAccountActivity extends BaseActivity {
 
             }
         });
-
         viewModel.getUserAlreadyExistMLD().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {

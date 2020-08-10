@@ -4,6 +4,18 @@ public class User {
     private String userName;
     private String userId;
 
+    private static User instance;
+
+    public static User getInstance() {
+        if (instance == null)
+            instance = new User();
+        return instance;
+
+    }
+
+    public User(){}
+
+
     public String getUserName() {
         return userName;
     }

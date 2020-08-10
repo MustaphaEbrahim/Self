@@ -1,4 +1,4 @@
-package com.example.self.UI.JournalList.View;
+package com.example.self.UI.PostJournal.View;
 
 import com.google.firebase.Timestamp;
 

@@ -43,25 +43,19 @@ public class CreateViewModel extends BaseViewModel {
         });
     }
 
-    public MutableLiveData<Boolean> getIsLoadingMLD() {
-        return isLoadingMLD;
-    }
+    public MutableLiveData<Boolean> getIsLoadingMLD() { return isLoadingMLD; }
 
-    public MutableLiveData<User> getIsSuccessMLD() {
-        return isSuccessMLD;
-    }
+    public MutableLiveData<User> getIsSuccessMLD() { return isSuccessMLD; }
 
-    public MutableLiveData<String> getIsErrorMLD() {
-        return isErrorMLD;
-    }
+    public MutableLiveData<String> getIsErrorMLD() { return isErrorMLD; }
+
+    public MutableLiveData<User> getUserAlreadyExistMLD() { return userAlreadyExistMLD; }
 
     public void getUser() {
 
         getUserDataProvider().getUser(new OnDataProviderResponseListener<User>() {
             @Override
-            public void onSuccess(User response) {
-                userAlreadyExistMLD.setValue(response);
-            }
+            public void onSuccess(User response) { userAlreadyExistMLD.setValue(response); }
 
             @Override
             public void onError(String errorMsg) {
@@ -72,7 +66,5 @@ public class CreateViewModel extends BaseViewModel {
 
     }
 
-    public MutableLiveData<User> getUserAlreadyExistMLD() {
-        return userAlreadyExistMLD;
-    }
+
 }

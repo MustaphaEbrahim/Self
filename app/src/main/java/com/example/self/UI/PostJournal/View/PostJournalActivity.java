@@ -11,18 +11,34 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.self.Application.App;
+
 import com.example.self.UI.Base.BaseActivity;
-import com.example.self.UI.JournalList.View.Journal;
+import com.example.self.UI.CreateAccount.View.User;
 import com.example.self.UI.JournalList.View.JournalListActivity;
 import com.example.self.UI.PostJournal.ViewModel.PostJournalViewModel;
 import com.example.self.databinding.ActivityPostJournalBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.util.List;
+
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class PostJournalActivity extends BaseActivity {
 
+    private FirebaseUser currentUser;
     //************************************
 
-
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 
     private Uri imageUri;
@@ -44,21 +60,7 @@ public class PostJournalActivity extends BaseActivity {
         binding = ActivityPostJournalBinding.inflate(getLayoutInflater());
         viewModel.getUserJournal();
         setContentView(binding.getRoot());
-
-        //*******************
-
-
-
-
-
-
-       /* if (App.getInstance() != null) {
-          binding.postUsernameTextView.setText(currentUserName);
-        }*/
-
-
         initListener();
-        //bundelfun();
     }
 
     private void initListener() {
@@ -67,9 +69,11 @@ public class PostJournalActivity extends BaseActivity {
             public void onClick(View v) {
                 //getimage from camera
 
-                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                checkPermissions();
+
+                /*Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent, GALLERY_CODE);
+                startActivityForResult(galleryIntent, GALLERY_CODE);*/
             }
         });
         binding.postSveJournalButton.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +87,7 @@ public class PostJournalActivity extends BaseActivity {
                 String thoughts = binding.postDescriptionET.getText().toString().trim();
 
 
-                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(thoughts)){
+                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(thoughts) && imageUri != null){
                     viewModel.saveJournal(title,thoughts,imageUri);
 
                 } else {
@@ -94,7 +98,32 @@ public class PostJournalActivity extends BaseActivity {
         });
     }
 
+    private void checkPermissions() {
 
+        Dexter.withContext(context).withPermissions(READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,CAMERA).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                    CropImage.activity()
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .setAspectRatio(2,1)
+                            .start(PostJournalActivity.this);
+                }
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest();
+            }
+        }).check();
+
+
+
+
+    }
+
+
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -103,6 +132,22 @@ public class PostJournalActivity extends BaseActivity {
                 imageUri = data.getData(); // we have the actual path to the image
                 binding.postImageView.setImageURI(imageUri);//show image
 
+            }
+        }
+    }
+*/
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                imageUri = result.getUri();
+                binding.postImageView.setImageURI(imageUri);//show image
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
             }
         }
     }
@@ -153,18 +198,21 @@ public class PostJournalActivity extends BaseActivity {
             @Override
             public void onChanged(Journal user) {
 
-              //  startsaveActivity(user);
-                Toast.makeText(context, "Success!", Toast.LENGTH_SHORT).show();
+
+
+              //startsaveActivity(user);
+                saveJournal();
+                //Toast.makeText(context, "Success!", Toast.LENGTH_SHORT).show();
 
 
             }
         });
 
-        viewModel.getUserAlreadyExistMLD().observe(this, new Observer<App>() {
+        viewModel.getUserAlreadyExistMLD().observe(this, new Observer<User>() {
             @Override
-            public void onChanged(App user) {
+            public void onChanged(User user) {
 
-
+                binding.postUsernameTextView.setText(user.getUserName());
               //  startsaveActivity(user);
 
             }
@@ -198,15 +246,22 @@ public class PostJournalActivity extends BaseActivity {
         });
     }
 
-            private void startsaveActivity(App app) {
+            private void startsaveActivity(Journal app) {
 
                 Intent intent = new Intent(PostJournalActivity.this , JournalListActivity.class);
                 intent.putExtra("username", app.getUserName());
-                intent.putExtra("userId", app.getId());
+                intent.putExtra("userId", app.getUserId());
                 intent.putExtra("imageUri" , app.getImageUrl());
                 intent.putExtra("time", app.getTimeAdded());
                 intent.putExtra("tittle", app.getTitle());
                 intent.putExtra("thought" , app.getThought());
+                startActivity(intent);
+                finish();
+
+            }
+
+            private void saveJournal(){
+                Intent intent = new Intent(PostJournalActivity.this , JournalListActivity.class);
                 startActivity(intent);
                 finish();
 

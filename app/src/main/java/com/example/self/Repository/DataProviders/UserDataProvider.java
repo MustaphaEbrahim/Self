@@ -4,13 +4,14 @@ package com.example.self.Repository.DataProviders;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.example.self.Application.App;
+
 import com.example.self.Repository.DataProviders.Base.BaseDataProvider;
 import com.example.self.Repository.DataProviders.Base.OnDataProviderResponseListener;
 
 import com.example.self.UI.CreateAccount.View.User;
-import com.example.self.UI.JournalList.View.Journal;
+import com.example.self.UI.PostJournal.View.Journal;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -19,18 +20,25 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class UserDataProvider extends BaseDataProvider {
     public static UserDataProvider sharedInstance = new UserDataProvider();
 
 
-    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser currentUser;
     private FirebaseUser user;
@@ -38,11 +46,9 @@ public class UserDataProvider extends BaseDataProvider {
 
     //fireStore connection
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private StorageReference storageReference;
-    private CollectionReference collectionReference = db.collection("Users");
-    private CollectionReference collectionReferenceStorage = db.collection("Journal");
-
-
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    private CollectionReference userCollectionReference = db.collection("Users");
+    private CollectionReference journalCollectionReference = db.collection("Journal");
 
 
     public void login(String type, int year, int fnUnit, int languageId, int branchNo, int userId, String password, OnDataProviderResponseListener<Boolean> responseListener) {
@@ -74,17 +80,18 @@ public class UserDataProvider extends BaseDataProvider {
         });*/
     }
 
-/*
-    public void getUser(OnDataProviderResponseListener<User> responseListener) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                responseListener.onSuccess(getDao().getUser());
-            }
-        });
-    }
-*/
-    public void saveJournal(String title , String thoughts ,Uri imageUri , OnDataProviderResponseListener<Journal> booleanOnDataProviderResponseListener){
+
+    /*
+        public void getUser(OnDataProviderResponseListener<User> responseListener) {
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    responseListener.onSuccess(getDao().getUser());
+                }
+            });
+        }
+    */
+    public void saveJournal(String title, String thoughts, Uri imageUri, User user, OnDataProviderResponseListener<Journal> booleanOnDataProviderResponseListener) {
 //        firebaseAuth.
         final StorageReference filepath = storageReference //.../journal_images/our_image.jpeg
                 .child("journal_images")
@@ -101,8 +108,8 @@ public class UserDataProvider extends BaseDataProvider {
                             public void onSuccess(Uri uri) {
 
 
-                                String currentUserName = currentUser.getDisplayName();
-                                String currentUserId = currentUser.getUid();
+                                String currentUserName = user.getUserName();
+                                String currentUserId = user.getUserId();
                                 String imageUrl = uri.toString();
                                 //create a Journal Object - model
                                 Journal journal = new Journal();
@@ -114,7 +121,7 @@ public class UserDataProvider extends BaseDataProvider {
                                 journal.setUserId(currentUserId);
 
                                 //invoke our collectionReference
-                                collectionReferenceStorage.add(journal)
+                                journalCollectionReference.add(journal)
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
@@ -149,10 +156,9 @@ public class UserDataProvider extends BaseDataProvider {
                 });
 
     }
-    public void getUserPostJournal(OnDataProviderResponseListener<App> userOnDataProviderResponseListener){
 
-        storageReference = FirebaseStorage.getInstance().getReference();
-        firebaseAuth = firebaseAuth.getInstance();
+    public void getUserPostJournal(OnDataProviderResponseListener<User> userOnDataProviderResponseListener) {
+
 
         firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
@@ -161,22 +167,45 @@ public class UserDataProvider extends BaseDataProvider {
                 user = firebaseAuth.getCurrentUser();
                 if (user != null) {
 
-                    App app = new App();
-                    app.setId(user.getUid());
-                    app.setUserName(user.getDisplayName());
-                    /*String currentUserId = App.getInstance().getUserId();
-                    String currentUserName = App.getInstance().getUsername();
-                    */
 
-                    userOnDataProviderResponseListener.onSuccess(app);
+                    userCollectionReference.document(user.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                            if (value != null) {
+                                User user = value.toObject(User.class);
+
+                                if (user != null) {
+                                    userOnDataProviderResponseListener.onSuccess(user);
+                                }
+
+                            }
+
+                        }
+                    });
+
+
                 }
             }
         });
     }
 
+    public void signOut(OnDataProviderResponseListener<Boolean> booleanOnDataProviderResponseListener) {
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (user != null) {
+                    firebaseAuth.signOut();
+                    booleanOnDataProviderResponseListener.onSuccess(true);
+                }
+            }
+        });
+
+    }
+
     public void createUserEmailAccount(String email, String password, String username, OnDataProviderResponseListener<User> booleanOnDataProviderResponseListener) {
 
-        firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
                 currentUser = firebaseAuth.getCurrentUser();
@@ -187,30 +216,24 @@ public class UserDataProvider extends BaseDataProvider {
                 user.setUserName(username);
                 user.setUserId(currentUserId);
 
-                App journalApi = new App();
-                journalApi.setId(currentUserId);
-                journalApi.setUserName(username);
 
-
-
-
-
-                collectionReference.add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                userCollectionReference.document(user.getUserId()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-
+                    public void onSuccess(Void aVoid) {
 
                         booleanOnDataProviderResponseListener.onSuccess(user);
-
-
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         booleanOnDataProviderResponseListener.onError(e.getLocalizedMessage());
+
+
                     }
                 });
+
+
             }
 
         }).addOnFailureListener(new OnFailureListener() {
@@ -222,31 +245,106 @@ public class UserDataProvider extends BaseDataProvider {
 
     }
 
+    public void loginEmailPasswordUser(String email, String password, OnDataProviderResponseListener<User> booleanOnDataProviderResponseListener) {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                FirebaseUser currentUser = authResult.getUser();
+                assert currentUser != null;
+                String currentUserId = currentUser.getUid();
+
+                userCollectionReference.document(currentUserId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        User user = documentSnapshot.toObject(User.class);
+                        if (user != null) {
+                            booleanOnDataProviderResponseListener.onSuccess(user);
+                        }
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        booleanOnDataProviderResponseListener.onError(e.getLocalizedMessage());
+
+                    }
+                });
+
+        /*        userCollectionReference.whereEqualTo("userId", currentUserId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                        if (value != null){
+                            User user = new User();
+
+                            for (QueryDocumentSnapshot snapshots : value){
+                                user.setUserName(snapshots.getString("userName"));
+                                user.setUserId(snapshots.getString("userId"));
+                            }
+
+
+
+
+                        }
+                    }
+                });
+
+*/
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                booleanOnDataProviderResponseListener.onError(e.getLocalizedMessage());
+            }
+        });
+    }
+
+    public void getJournalsList(User user, OnDataProviderResponseListener<List<Journal>> userOnDataProviderResponseListener) {
+
+        List<Journal> journalList = new ArrayList<>();
+
+        journalCollectionReference.whereEqualTo("userId", user.getUserId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if (!queryDocumentSnapshots.isEmpty()) {
+                    for (QueryDocumentSnapshot journals : queryDocumentSnapshots) {
+                        Journal journal = journals.toObject(Journal.class);
+                        journalList.add(journal);
+                    }
+                    userOnDataProviderResponseListener.onSuccess(journalList);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
+    }
 
     public void getUser(OnDataProviderResponseListener<User> userOnDataProviderResponseListener) {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                currentUser = firebaseAuth.getCurrentUser();
+        currentUser = firebaseAuth.getCurrentUser();
 
-                if (currentUser != null){//user is already loggin...
+        if (currentUser != null) {//user is already loggin...
 
-                    User user = new User();
-                    user.setUserId(currentUser.getUid());
-                    user.setUserName(currentUser.getDisplayName());
+            User user = new User();
+            user.setUserId(currentUser.getUid());
+            user.setUserName(currentUser.getDisplayName());
 
-                    userOnDataProviderResponseListener.onSuccess(user);
+            userOnDataProviderResponseListener.onSuccess(user);
 
 
-
-                }else{//no user yet...
-
-                }
-            }
-        });
+        }
 
 
 
@@ -270,7 +368,6 @@ public class UserDataProvider extends BaseDataProvider {
                 }
             }
         };*/
-
 
 
     }

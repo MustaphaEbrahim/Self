@@ -18,6 +18,9 @@
     <string name="greateful_text">What are grateful for today?</string>
     <string name="get_started_text">Get Started</string>
     <string name="username_hint">username</string>
+    <string name="menu_tittle">Add Thoughts</string>
+    <string name="signout">Sign out</string>
+    <string name="write_a_journal_entry_by_clicking_the_sign">Write a Journal Entry by clicking the sign</string>
 
 
 </resources>
