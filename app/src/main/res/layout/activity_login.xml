@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="@drawable/gradient_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -26,24 +27,26 @@
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:id="@+id/email"
+            android:textStyle="italic"
+            android:textColorHint="@color/black"
             android:hint="@string/hint_email"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/black"
             android:id="@+id/password"
+            android:textStyle="italic"
             android:hint="@string/password_hint"
             android:layout_marginTop="16dp"
             android:inputType="textPassword"
             android:maxLines="1"/>
-        <Button
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/EmailSignInButton"
-            android:textColor="@color/colorWhite"
+            style="@style/buttonStyle"
             android:text="@string/login_text"
-            android:background="@color/colorAccent"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="20dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -53,14 +56,12 @@
             android:textStyle="bold"
             android:gravity="center_horizontal"/>
 
-        <Button
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/CreateAcctButton"
-            android:textColor="@color/colorWhite"
+            style="@style/buttonStyle"
             android:text="@string/screate_text"
-            android:background="@color/colorAccent"
-            android:textStyle="bold"
             />
 
     </LinearLayout>

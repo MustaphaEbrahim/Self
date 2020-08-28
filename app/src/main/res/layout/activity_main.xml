@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp"
+    android:background="@drawable/gradient_bg"
     tools:context=".UI.Main.View.MainActivity">
 
     <TextView
@@ -51,7 +52,8 @@
         android:id="@+id/startButton"
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         android:text="@string/get_started_text"/>
 
 </LinearLayout>

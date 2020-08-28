@@ -4,27 +4,61 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:gravity="end"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/journal_row_username"
+            android:text="@string/name_hint_create"
+            android:padding="3dp"
+            android:textSize="17sp"
+            android:gravity="start"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_share"
+            android:id="@+id/journal_row_share_button"
+            android:contentDescription="@string/add_image" />
+
+
+    </LinearLayout>
     
     <LinearLayout
+        android:background="@drawable/color_button"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         >
 
         <ImageView
             android:id="@+id/journal_image_list"
+            android:layout_width="match_parent"
+            android:layout_height="192dp"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
             android:scaleType="fitXY"
-            android:src="@drawable/cover"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:src="@drawable/color_button"
+            android:contentDescription="@string/add_image" />
 
         <TextView
             android:id="@+id/journal_title_list"
-            android:padding="10dp"
-            android:text="Title"
+            android:text="@string/title"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_width="match_parent"
@@ -32,22 +66,19 @@
 
         <TextView
             android:id="@+id/journal_thought_list"
-            android:padding="10dp"
-            android:text="Thoughts..."
-            android:paddingStart="10dp"
-            android:paddingTop="15dp"
-            android:paddingEnd="15dp"
+            android:text="@string/your_thouths"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         
         <TextView
             android:id="@+id/journal_timestamp_list"
             android:padding="5dp"
-            android:text="Date_created"
+            android:text="@string/date_created"
             android:textStyle="italic"
             android:layout_width="match_parent"
+            android:gravity="end"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>

@@ -197,6 +197,21 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="buttonStyle">
+        <item name="android:inset">0dp</item>
+        <item name="android:background">@drawable/color_button</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:layout_marginEnd">25dp</item>
+        <item name="android:layout_marginStart">25dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
 
 
 </resources>

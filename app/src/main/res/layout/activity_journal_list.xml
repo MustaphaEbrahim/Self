@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/gradient_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.JournalList.View.JournalListActivity">
@@ -12,10 +13,10 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/startColorButton"
         app:theme="@style/toolbar_theme"
         app:title="@string/app_name"
-        app:titleTextColor="@color/colorWhite"
+        app:titleTextColor="@color/white"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextAppearance="@style/ToolbarTextAppearance.Title" />
 

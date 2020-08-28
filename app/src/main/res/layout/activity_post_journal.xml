@@ -3,25 +3,30 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/gradient_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.PostJournal.View.PostJournalActivity">
 
     <EditText
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:id="@+id/postDescriptionET"
-        android:layout_width="391dp"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Your Thouths"
+        android:hint="@string/your_thouths"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postTitleEditText" />
 
     <ImageView
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:id="@+id/post_imageView"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="216dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,13 +34,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.066"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        android:src="@drawable/color_button" />
 
     <TextView
         android:id="@+id/postUsernameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ginaa"
+        android:text="@string/name_hint_create"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="@+id/postTitleEditText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="today"
+        android:text="@string/today"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.166"
@@ -67,13 +72,15 @@
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <EditText
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:id="@+id/postTitleEditText"
-        android:layout_width="391dp"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Name"
+        android:hint="@string/name_hint_create"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_imageView" />
@@ -92,12 +99,13 @@
         app:layout_constraintVertical_bias="0.0"
         android:visibility="gone"/>
 
-    <Button
+    <TextView
         android:id="@+id/postSveJournalButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="Button"
+        android:layout_margin="60dp"
+        android:text="@string/add_image"
+        style="@style/buttonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

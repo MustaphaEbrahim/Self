@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:background="@drawable/gradient_bg"
+
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,6 +28,8 @@
             android:id="@+id/userNameAcct"
             android:hint="@string/username_hint"
             android:inputType="textPersonName"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
             android:maxLines="1"
             android:paddingBottom="16dp"
             />
@@ -33,12 +37,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
             android:maxLines="1"
             android:layout_marginTop="16dp"
             android:id="@+id/emailAcct"
             android:hint="@string/hint_email"/>
+
         <EditText
             android:layout_width="match_parent"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
             android:layout_height="wrap_content"
             android:id="@+id/passwordAcct"
             android:hint="@string/password_hint"
@@ -47,14 +56,13 @@
             android:maxLines="1"/>
 
 
-        <Button
+        <TextView
+            android:layout_margin="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/Create_acct_button"
-            android:textColor="@color/colorWhite"
             android:text="@string/screate_text"
-            android:background="@color/colorAccent"
-            android:textStyle="bold"
+            style="@style/buttonStyle"
             />
 
     </LinearLayout>
